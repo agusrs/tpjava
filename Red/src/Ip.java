@@ -38,19 +38,17 @@ public class Ip {
 			s=ps;
 			t=pt;
 			c=pc;
-			setDireccion();
 		}
 	}
 	
-	public getDireccion() {
-		Ip ip 
-	}
 	
-	private void setDireccion() {
+	public Ip Direccion() {
 		Ip ip = getIp();
 		Ip Direccion = new Ip(ip.p,ip.s,ip.t,ip.c);
 		Direccion.setIp(Direccion.p, Direccion.s, Direccion.t, 0);
+		return Direccion;
 	}
+	
 	@Override
 	public String toString() {
 		return "Ip: " + p + "." + s + "." + t + "." + c;
