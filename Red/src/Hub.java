@@ -3,20 +3,16 @@ import java.util.Arrays;
 
 public class Hub {
 	int cantidadPuertos;
-	Ruta[] Puertos = new Ruta[cantidadPuertos];
+	int dispositivosConectados;
+	Dispositivo[] Puertos = new Dispositivo[cantidadPuertos];
 	
-	public void AgregarDispositivo(Ruta ruta) {
-		cantidadPuertos+=1;
-		Puertos[cantidadPuertos].dirRed = ruta.dirRed;
-		Puertos[cantidadPuertos].interfaz = ruta.interfaz;
-	}
-	public void RemoverDispositivo() {
-		Arrays.copyOf(Puertos, Puertos.length-1);
+	public Hub() {
+		dispositivosConectados=0;
 	}
 	
 	public void ReenviarPaquete(Paquete p1) {
-		for (Ruta ruta : Puertos) {
-			
+		for (Dispositivo x : Puertos) {
+			x.recibirPaquete(p1);
 		}
 	}
 }

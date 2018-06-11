@@ -1,4 +1,4 @@
 
-public class Terminal {
+public class Terminal extends Dispositivo {
 
 }
