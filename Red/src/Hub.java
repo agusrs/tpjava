@@ -12,7 +12,11 @@ public class Hub {
 	
 	public void ReenviarPaquete(Paquete p1) {
 		for (Dispositivo x : Puertos) {
-			x.recibirPaquete(p1);
+			try {
+				x.getSO().recibirPaquete(p1);
+			} catch (SistemaOperativoFaltanteException e) {
+				System.out.println("El dispositivo: " + x + "no tiene un sistema operativo instalado");
+			}
 		}
 	}
 }
