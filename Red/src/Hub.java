@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Hub {
-	int cantidadPuertos;
+public class Hub extends Dispositivo {
 	int dispositivosConectados;
-	Dispositivo[] Puertos = new Dispositivo[cantidadPuertos];
+	Dispositivo[] Puertos = new Dispositivo[puertos];
 	
-	public Hub() {
+	public Hub(int cantp) {
+		dgw=null;
+		ips=null;
+		so=null;
+		paqueteactual=null;
+		puertos = cantp;
 		dispositivosConectados=0;
 	}
 	
