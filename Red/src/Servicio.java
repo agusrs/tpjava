@@ -3,7 +3,7 @@ public class Servicio extends Paquete {
 	enum tipos {WHO, ICMPRequest, ICMPResponse, SendMessage}
 	tipos tipo;
 	
-	public Servicio (String ipd, String ipo, int ttl, String tipo) {
+	public Servicio (Ip ipd, Ip ipo, int ttl, String tipo) {
 		destino = ipd;
 		origen = ipo;
 		this.ttl=ttl;

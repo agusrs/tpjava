@@ -6,6 +6,7 @@ public class Ip {
 	private int c=0;
 	
 	
+	
 	public Ip() {
 		p=0;
 		s=0;
@@ -25,9 +26,8 @@ public class Ip {
 	}
 	
 	public Ip getIp() {
-		Ip ip = new Ip(p,s,t,c);
-		System.out.println(ip.toString());
-		return ip;
+		System.out.println(toString());
+		return this;
 	}
 	
 	public void setIp(int pp, int ps, int pt, int pc) {
@@ -49,6 +49,25 @@ public class Ip {
 		return Direccion;
 	}
 	
+	public boolean esMismaRed(Ip ip) {
+		boolean resultado = false;
+		if (this.p==ip.p) {
+			if (this.s==ip.s) {
+				if (this.t==ip.t) {
+					resultado = true;
+				}
+			}
+		}
+		return resultado;
+	}
+	
+	public boolean esIpValida() {
+		boolean resultado = true;
+		if(p>255 && p<0 && s>255 && s<0 && t>255 && t<0 && c>254 && c<1) {
+			resultado = false;
+		}
+		return resultado;
+}
 	@Override
 	public String toString() {
 		return "Ip: " + p + "." + s + "." + t + "." + c;
