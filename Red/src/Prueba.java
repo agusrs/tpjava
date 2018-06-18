@@ -5,7 +5,7 @@ public class Prueba {
 		Ip ip = new Ip();
 		ip.getIp();
 		ip.setIp(192, 168, 0, 1);
-		System.out.println(ip.getIp());
+		ip.getIp();
 
 	}
 
