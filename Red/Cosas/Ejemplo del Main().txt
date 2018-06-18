@@ -1,0 +1,16 @@
+Main
+	pc pc1
+	pc pc2
+	Hub hub1
+	Router router1
+	// Conexion
+	pc1.conectar(hub1)
+	pc2.conectar(hub2)
+	router1.conectar(puerto1, hub1)
+	// Instalacion
+	pc1.instalar(new Windows())
+	router1.instalar(new CiscoOS())
+	// CONFIGURACION
+	pc1.getSO.agregarIp(IP ip1)
+	pc1.getSO.agregarDgw(Ip(192.168.0.254))
+	router.getSO.setIp(Ip ip1, puerto1)

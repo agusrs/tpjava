@@ -1,10 +1,9 @@
 
 public abstract class Paquete {
 	
-	protected String origen;
-	protected String destino;
+	protected Ip origen;
+	protected Ip destino;
 	protected int ttl;
-	
 	
 
 }
