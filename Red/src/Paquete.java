@@ -5,6 +5,6 @@ public abstract class Paquete {
 	protected Ip destino;
 	protected int ttl;
 	
-	//
+	////
 //
 }
