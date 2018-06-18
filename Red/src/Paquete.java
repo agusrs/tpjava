@@ -5,6 +5,6 @@ public abstract class Paquete {
 	protected String destino;
 	protected int ttl;
 	
-	//
-//
+	
+
 }
