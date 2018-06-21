@@ -11,9 +11,9 @@ public class Windows extends SistemaOperativo {
 			//ipd = teclado.nextline();
 		}
 		
-		Servicio p = new Servicio(ipdispositivo, ipd, 50, "ICMPRequest");
+		Servicio p = new Servicio(ips[0], ipd, 50, "ICMPRequest");
 		
-		if (ipd.esMismaRed(ipdispositivo)) {
+		if (ipd.esMismaRed(ips[0])) {
 			enviarPaquete(p);
 		} else {
 			enviarPaquete(nuevoPaqueteRuteo(p));

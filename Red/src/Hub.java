@@ -2,12 +2,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Hub extends Dispositivo {
-	int dispositivosConectados;
 	Dispositivo[] Puertos = new Dispositivo[puertos];
 	
 	public Hub(int cantp) {
-		dgw=null;
-		ips=null;
 		so=null;
 		paqueteactual=null;
 		puertos = cantp;
@@ -20,7 +17,14 @@ public class Hub extends Dispositivo {
 				x.getSO().recibirPaquete(p1);
 			} catch (SistemaOperativoFaltanteException e) {
 				System.out.println("El dispositivo: " + x + "no tiene un sistema operativo instalado");
+			} catch (PackageTypeException e) {
+				
 			}
 		}
+	}
+	
+	public void conectar(Dispositivo d) {
+		Puertos[dispositivosConectados] = d;
+		dispositivosConectados++;
 	}
 }
