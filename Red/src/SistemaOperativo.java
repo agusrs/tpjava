@@ -14,13 +14,10 @@ public abstract class SistemaOperativo {
 	
 	
 	
-	public void enviarPaquete(Paquete p) {}
+	public void enviarPaquete(Paquete p) {
+		
+	}
 	public void recibirPaquete(Paquete p) throws PackageTypeException {
-		if(true) {
-			paquete=p;
-		} else {
-			throw new PackageTypeException();
-		}
 	}
 	
 	public boolean esDestino(Ip destino) {
