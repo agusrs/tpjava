@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Hub extends Dispositivo {
-	Dispositivo[] Puertos = new Dispositivo[puertos];
 	
 	public Hub(int cantp) {
 		so=null;
@@ -12,7 +11,7 @@ public class Hub extends Dispositivo {
 	}
 	
 	public void ReenviarPaquete(Paquete p1) {
-		for (Dispositivo x : Puertos) {
+		for (Dispositivo x : interfaces) {
 			try {
 				x.getSO().recibirPaquete(p1);
 			} catch (SistemaOperativoFaltanteException e) {
@@ -24,7 +23,7 @@ public class Hub extends Dispositivo {
 	}
 	
 	public void conectar(Dispositivo d) {
-		Puertos[dispositivosConectados] = d;
+		interfaces[dispositivosConectados] = d;
 		dispositivosConectados++;
 	}
 }

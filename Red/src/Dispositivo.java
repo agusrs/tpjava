@@ -1,6 +1,7 @@
 
 public abstract class Dispositivo {
 	protected int puertos;
+	protected Dispositivo[] interfaces = new Dispositivo[puertos];
 	protected SistemaOperativo so;
 	protected Paquete paqueteactual;
 	protected int dispositivosConectados;
@@ -15,27 +16,34 @@ public abstract class Dispositivo {
 	}
 	
 	public void instalarSO(String so) throws SistemaOperativoInvalidoException {
-		switch (so) {
-			case "Windows":
-				Windows windows = new Windows();
-				windows.puertos = puertos;
-				this.so=windows;
-				break;
-			case "CiscoSo":
-				CiscoSo cso = new CiscoSo();
-				cso.puertos=puertos;
-				this.so=cso;
-				break;
-			default:
-				throw new SistemaOperativoInvalidoException();
-	}
-	}
-	
-	public void conectar(Dispositivo d) {
+		if(this instanceof Hub) {
+			System.out.println("No puede instalar un SO en un Hub");
+		} else {
+			switch (so) {
+				case "Windows":
+					Windows windows = new Windows();
+					windows.puertos = puertos;
+					this.so=windows;
+					break;
+				case "CiscoSo":
+					CiscoSo cso = new CiscoSo();
+					cso.puertos=puertos;
+					this.so=cso;
+					break;
+				default:
+					throw new SistemaOperativoInvalidoException();
+			}
+		}
 		
 	}
 	
-	/*public void recibirPaquete(Paquete p1) {
-		paqueteactual=p1;
-	}*/
+
+	public void conectar(Dispositivo d) {
+		interfaces[dispositivosConectados] = d;
+		dispositivosConectados++;
+		d.interfaces[dispositivosConectados] = this;
+		d.dispositivosConectados++;
+		
+	}
 }
+	

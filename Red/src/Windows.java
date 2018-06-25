@@ -2,26 +2,40 @@ import java.util.Scanner;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
+
 public class Windows extends SistemaOperativo {
 	
-	public void ping(Ip ipd) {
-		while(!ipd.esIpValida()) {
-			System.out.println("Direccion ip invalida");
-			System.out.println("Ingrese nuevamente: ");
-			//ipd = teclado.nextline();
-		}
+	public Windows() {
+		nombre = "Windows";
+		version = 10;
 		
-		Servicio p = new Servicio(ips[0], ipd, 50, "ICMPRequest");
-		
-		if (ipd.esMismaRed(ips[0])) {
-			enviarPaquete(p);
-		} else {
-			enviarPaquete(nuevoPaqueteRuteo(p));
-		}
 	}
 	
-	public Ruteo nuevoPaqueteRuteo(Paquete p) {
-		Ruteo pqt = new Ruteo(p);
-		return pqt;
+
+	
+	public void recibirPaquete(Servicio p) throws DestinoInvalidoException {
+			if(esDestino(p)) {
+				procesarPaquete(p);
+			} else {
+				throw new DestinoInvalidoException();
+			}
+		}
+
+	private void procesarPaquete(Servicio p) {
+		switch(p.tipo) {
+		case WHO:
+			Servicio p2 = new Servicio(p.origen, p.destino, 50, p.tipo.SendMessage);
+			enviarPaquete(p2);
+		case ICMPRequest:
+			Servicio p3 = new Servicio(p.origen, p.destino, 50, p.tipo.ICMPResponse);
+			enviarPaquete(p3);
+		case ICMPResponse:
+			System.out.println("Recibido ICMP desde:");
+		case SendMessage:
+			System.out.println(p.mensaje);
+		}
+		
+		
 	}
-}
+	}
+

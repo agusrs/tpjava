@@ -1,7 +1,11 @@
 
 public class Terminal extends Dispositivo {
-	Dispositivo conectado;
-	int puertos = 1;
+	private Dispositivo conectado;
+	private int puertos = 1;
+	
+	public Terminal() {
+		
+	}
 	
 	
 	

@@ -1,23 +1,24 @@
 
 public class Servicio extends Paquete {
-	enum tipos {WHO, ICMPRequest, ICMPResponse, SendMessage}
+	public enum tipos {WHO, ICMPRequest, ICMPResponse, SendMessage}
 	tipos tipo;
+	protected String mensaje;
 	
-	public Servicio (Ip ipd, Ip ipo, int ttl, String tipo){
+	public Servicio (Ip ipd, Ip ipo, int ttl, tipos tipo){
 		destino = ipd;
 		origen = ipo;
 		this.ttl=ttl;
 			switch (tipo) {
-			case("WHO"):
+			case WHO:
 				this.tipo = tipos.WHO;
 				break;
-			case("ICMPRequest"):
+			case ICMPRequest:
 				this.tipo = tipos.ICMPRequest;
 				break;
-			case("ICMPResponse"):
+			case ICMPResponse:
 				this.tipo = tipos.ICMPResponse;
 				break;
-			case("SendMessage"):
+			case SendMessage:
 				this.tipo = tipos.SendMessage;
 				break;
 			}

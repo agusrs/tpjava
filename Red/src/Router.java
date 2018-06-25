@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Router extends Dispositivo {
 	private int interfazdefault;
-	Dispositivo[] interfaces = new Dispositivo[puertos];
 	
 	public Router(int puertos) {
 		this.puertos=puertos;
@@ -28,10 +27,7 @@ public class Router extends Dispositivo {
 		
 	}
 	
-	public void conectar(Dispositivo d) {
-		interfaces[dispositivosConectados] = d;
-		dispositivosConectados++;
-	}
+
 	
 	
 	
