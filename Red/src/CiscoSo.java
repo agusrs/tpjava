@@ -9,7 +9,7 @@ public class CiscoSo extends SistemaOperativo {
 	
 	
 	public void recibirPaquete(Paquete p) throws PackageTypeException {
-		
+		//
 	}
 	//
 	public void Ping(Ip destino) {
