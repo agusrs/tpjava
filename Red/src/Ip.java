@@ -4,50 +4,53 @@ public class Ip {
 	private int s=0;
 	private int t=0;
 	private int c=0;
+	private String ip;
+	private String direccion;
 	
-	
+	public String getIp() {
+		return ip;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
 	
 	public Ip() {
 		p=0;
 		s=0;
 		t=0;
 		c=0;
+		ip=p+ "."+ s + "." + t + "." + c;
+		direccion=p+ "."+ s + "." + t + "." + "0";
 	}
-	public Ip(int pp, int ps, int pt, int pc) {
+	
+	public Ip(int pp, int ps, int pt, int pc) throws IpFueraDeRangoException {
 		if (pp>255 && pp<0 && ps>255 && ps<0 && pt>255 && pt<0 && pc>254 && pc<1) {
-			System.out.println("Ip fuera de rango");
+			throw new IpFueraDeRangoException();
 		} else {
 			p=pp;
 			s=ps;
 			t=pt;
 			c=pc;
+			ip=p+ "."+ s + "." + t + "." + c;
+			direccion=p+ "."+ s + "." + t + "." + "0";
 		}
 
 	}
 	
-	public Ip getIp() {
-		System.out.println(toString());
-		return this;
-	}
-	
-	public void setIp(int pp, int ps, int pt, int pc) {
+	public void setIp(int pp, int ps, int pt, int pc) throws IpFueraDeRangoException {
 		if (pp>255 && pp<0 && ps>255 && ps<0 && pt>255 && pt<0 && pc>254 && pc<1) {
-			System.out.println("Ip fuera de rango");
+			throw new IpFueraDeRangoException();
 		} else {
 			p=pp;
 			s=ps;
 			t=pt;
 			c=pc;
+			ip=p+ "."+ s + "." + t + "." + c;
+			direccion=p+ "."+ s + "." + t + "." + "0";
 		}
 	}
 	
-	
-	public Ip Direccion() {
-		Ip ip = getIp();
-		Ip Direccion = new Ip(ip.p,ip.s,ip.t,ip.c);
-		Direccion.setIp(Direccion.p, Direccion.s, Direccion.t, 0);
-		return Direccion;
-	}
 	
 	public boolean esMismaRed(Ip ip) {
 		boolean resultado = false;
@@ -68,10 +71,6 @@ public class Ip {
 		}
 		return resultado;
 }
-	@Override
-	public String toString() {
-		return "Ip: " + p + "." + s + "." + t + "." + c;
-	}
-	
+
 	
 }

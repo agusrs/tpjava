@@ -3,6 +3,13 @@ import java.util.Arrays;
 
 public class Hub extends Dispositivo {
 	
+	public Hub() {
+		so=null;
+		paqueteactual=null;
+		dispositivosConectados=0;
+		puertos=2;
+	}
+	
 	public Hub(int cantp) {
 		so=null;
 		paqueteactual=null;
@@ -10,20 +17,14 @@ public class Hub extends Dispositivo {
 		dispositivosConectados=0;
 	}
 	
-	public void ReenviarPaquete(Paquete p1) {
+	public void recibirPaquete(Paquete p1) {
 		for (Dispositivo x : interfaces) {
 			try {
 				x.getSO().recibirPaquete(p1);
 			} catch (SistemaOperativoFaltanteException e) {
 				System.out.println("El dispositivo: " + x + "no tiene un sistema operativo instalado");
-			} catch (PackageTypeException e) {
-				
+			} catch (DestinoInvalidoException e) {
 			}
 		}
-	}
-	
-	public void conectar(Dispositivo d) {
-		interfaces[dispositivosConectados] = d;
-		dispositivosConectados++;
 	}
 }
