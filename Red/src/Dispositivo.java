@@ -48,6 +48,7 @@ public abstract class Dispositivo {
 		
 	}
 	
+	
 
 	public void conectar(Dispositivo d) {
 		boolean existe=false;

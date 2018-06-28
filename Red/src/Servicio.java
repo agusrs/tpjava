@@ -4,7 +4,7 @@ public class Servicio extends Paquete {
 	private tipos tipo;
 	private String mensaje;
 	
-	public Servicio (Ip ipd, Ip ipo, int ttl, tipos tipo){
+	public Servicio (Ip ipo, Ip ipd, int ttl, tipos tipo){
 		setDestino(ipd);
 		setOrigen(ipo);
 		setTtl(ttl);

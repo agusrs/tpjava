@@ -19,34 +19,41 @@ public abstract class SistemaOperativo {
 		return pqt;
 	}
 	
+	public abstract void ping(Ip ipd) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
 	
-	public void enviarPaquete(Paquete p) {
-		
-	}
+	public abstract void enviarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
+	public abstract void enviarPaquete(Paquete p, int interfaz) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
+
 	
 	protected void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 			switch(((Servicio) p).getTipo()) {
 			case WHO:
 				Servicio p2 = new Servicio(p.getOrigen(), p.getDestino(), 50, Servicio.tipos.WHO);
 				enviarPaquete(p2);
+				break;
 			case ICMPRequest:
-				Servicio p3 = new Servicio(p.getOrigen(), p.getDestino(), 50, Servicio.tipos.ICMPRequest);
+				Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), 50, Servicio.tipos.ICMPResponse);
 				enviarPaquete(p3);
+				break;
 			case ICMPResponse:
-				System.out.println("Recibido ICMP desde: " + p.getOrigen() + "TTL: " + p.getTtl());
+				System.out.println("Recibido ICMP desde: " + p.getOrigen().getIp() + " TTL: " + p.getTtl());
+				break;
 			case SendMessage:
 				if(this instanceof Windows) {
 					System.out.println(((Servicio) p).getMensaje());
 				}
+				break;
 			}
 	}
 			
 
+	public abstract void agregarIp(Ip ip);
+	public abstract void agregarIp(Ip ip, int puerto);
 
 	
 	public void recibirPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 		if(esDestino(p)) {
-			procesarPaquete(p);
+				procesarPaquete(p);
 		} else {
 			throw new DestinoInvalidoException();
 		}
@@ -55,10 +62,11 @@ public abstract class SistemaOperativo {
 	public boolean esDestino(Paquete p) {
 		boolean res = false;
 		for (Ip ip:ips) {
-			if(p.getDestino().equals(ip)) {
-				res=true;
+				if(p.getDestino().equals(ip)) {
+					res=true;
+				}
 			}
-		}
 		return res;
+
 	}
 }

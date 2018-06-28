@@ -25,6 +25,10 @@ public class Windows extends SistemaOperativo {
 		cantips++;
 	}
 	
+	public void agregarIp(Ip ip, int puerto) {
+		agregarIp(ip);
+	}
+	
 	public void agregarDgw(Ip dgw) {
 		this.dgw=dgw;
 	}
@@ -38,20 +42,29 @@ public class Windows extends SistemaOperativo {
 			System.out.println(ip.getIp());
 		}
 	}
-	
-	public void who(Ip destino) {
-		Servicio p = new Servicio(dgw, destino, 50, Servicio.tipos.WHO);
-		if (destino.esMismaRed(dgw)) {
+
+	public void ping(Ip ipd) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		Servicio p = new Servicio(ips[0], ipd, 50, Servicio.tipos.ICMPRequest);
+		if(ipd.esMismaRed(ips[0])) {
 			enviarPaquete(p);
 		} else {
 			enviarPaquete(nuevoPaqueteRuteo(p));
 		}
 	}
 	
-	public void enviarMensaje(Ip destino, String mensaje) {
-		Servicio p = new Servicio(dgw, destino, 50, Servicio.tipos.SendMessage);
+	public void who(Ip destino) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		Servicio p = new Servicio(ips[0], destino, 50, Servicio.tipos.WHO);
+		if (destino.esMismaRed(ips[0])) {
+			enviarPaquete(p);
+		} else {
+			enviarPaquete(nuevoPaqueteRuteo(p));
+		}
+	}
+	
+	public void enviarMensaje(Ip destino, String mensaje) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		Servicio p = new Servicio(ips[0], destino, 50, Servicio.tipos.SendMessage);
 		p.setMensaje(mensaje);
-		if (destino.esMismaRed(dgw)) {
+		if (destino.esMismaRed(ips[0])) {
 			enviarPaquete(p);
 		} else {
 			enviarPaquete(nuevoPaqueteRuteo(p));
@@ -60,6 +73,26 @@ public class Windows extends SistemaOperativo {
 	
 	protected void setDispositivo(Dispositivo dispositivo2) {
 		dispositivo=(Terminal) dispositivo2;
+		
+	}
+
+	
+	public void enviarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		if(dispositivo.interfaces[0] instanceof Hub) {
+			((Hub) dispositivo.interfaces[0]).recibirPaquete(p);
+		} else {
+			dispositivo.interfaces[0].getSO().recibirPaquete(p);
+		}
+	}
+	
+
+	@Override
+	public void enviarPaquete(Paquete p, int interfaz) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		if(interfaz>1) {
+			System.out.println("Error, la terminal solo posee una interfaz");
+		} else {
+			enviarPaquete(p);
+		}
 		
 	}
 }

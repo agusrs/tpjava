@@ -12,24 +12,30 @@ public class CiscoSo extends SistemaOperativo {
 		return dispositivo;
 	}
 	
-	public void setIp(Ip ip, int puerto) {
+	public void agregarIp(Ip ip, int puerto) {
 		if(puerto<=puertos) {
-			ips[puerto] = ip;
+			ips[puerto-1] = ip;
 		} else {
 			System.out.println("puerto inexistente");
 		}
 	}
 	
-	
-	public void recibirPaquete(Paquete p) throws DestinoInvalidoException {
-		//
-	}
-	//
-	
-	public void enviarPaquete(Paquete p, int puerto) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
-		this.getDispositivo().interfaces[puerto].getSO().recibirPaquete(p);
+	public void agregarIp(Ip ip) {
+		System.out.println("Error, debe especificar un puerto");
 	}
 	
+	
+	public void recibirPaquete(Ruteo p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		if(esDestino(p)) {
+			p.setTtl(p.getTtl()-1);
+			if(p.getTtl()>0) {
+				procesarPaquete(p);
+			}
+		} else {
+			
+		}
+	}
+
 	@Override protected void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 			if(p instanceof Servicio) {
 				super.procesarPaquete(p);
@@ -68,6 +74,15 @@ public class CiscoSo extends SistemaOperativo {
 	protected void setDispositivo(Dispositivo dispositivo2) {
 		dispositivo=(Router) dispositivo2;
 		
+	}
+
+	public void enviarPaquete(Paquete p, int puerto) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		this.getDispositivo().interfaces[puerto].getSO().recibirPaquete(p);
+	}
+	
+	
+	public void enviarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		System.out.println("Error, debe indicar una interfaz de salida");
 	}
 	
 }

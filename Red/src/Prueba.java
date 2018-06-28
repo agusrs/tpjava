@@ -23,18 +23,22 @@ public class Prueba {
 			Ip dgw1 = new Ip(192,168,0,253);
 			Ip ip2 = new Ip(192,168,0,2);
 			Ip dgw2 = new Ip(192,168,0,254);
-			Ip ip3 = new Ip(192,168,0,0);
-			Ip ip4 = new Ip(10,10,10,0);
+			Ip ip3 = new Ip(192,168,0,3);
+			Ip ip4 = new Ip(10,10,10,2);
 			Ip ip5 = new Ip(10,10,10,1);
-			((Windows) pc1.getSO()).agregarIp(ip1);
-			((Windows) pc1.getSO()).agregarDgw(dgw1);
-			((Windows) pc1.getSO()).agregarIp(ip2);
-			((Windows) pc1.getSO()).agregarDgw(dgw2);
-			((CiscoSo) router1.getSO()).setIp(ip3, 1);
-			((CiscoSo) router1.getSO()).setIp(ip4, 2);
-			((Windows) pc1.getSO()).agregarIp(ip5);
-			
-			
+			Ip dgw3 = new Ip(10,10,10,254);
+			pc1.getSO().agregarIp(ip1);
+			((Windows)pc1.getSO()).agregarDgw(dgw1);
+			pc2.getSO().agregarIp(ip2);
+			((Windows)pc2.getSO()).agregarDgw(dgw2);
+			router1.getSO().agregarIp(ip3, 1);
+			router1.getSO().agregarIp(ip4, 2);
+			pc3.getSO().agregarIp(ip5);
+			((Windows)pc3.getSO()).agregarDgw(dgw3);
+			pc1.getSO().ping(ip2);
+			pc1.getSO().ping(ip5);
+
+
 			
 			
 			System.out.println("Termina bien");
@@ -48,6 +52,9 @@ public class Prueba {
 		} catch (IpFueraDeRangoException e) {
 
 		} catch (SistemaOperativoFaltanteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DestinoInvalidoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

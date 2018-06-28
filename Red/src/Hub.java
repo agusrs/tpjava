@@ -18,11 +18,11 @@ public class Hub extends Dispositivo {
 	}
 	
 	public void recibirPaquete(Paquete p1) {
-		for (Dispositivo x : interfaces) {
+		for (int i=0;i<dispositivosConectados;i++) {
 			try {
-				x.getSO().recibirPaquete(p1);
+				interfaces[i].getSO().recibirPaquete(p1);
 			} catch (SistemaOperativoFaltanteException e) {
-				System.out.println("El dispositivo: " + x + "no tiene un sistema operativo instalado");
+				System.out.println("El dispositivo: " + interfaces[i] + "no tiene un sistema operativo instalado");
 			} catch (DestinoInvalidoException e) {
 			}
 		}

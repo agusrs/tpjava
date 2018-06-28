@@ -11,6 +11,9 @@ public class Ruteo extends Paquete {
 	}
 
 	public Ruteo(Paquete p) {
+		setDestino(p.getDestino());
+		setOrigen(p.getOrigen());
+		setTtl(p.getTtl());
 		contenido = p;
 		
 	}

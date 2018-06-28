@@ -8,6 +8,8 @@ public class Terminal extends Dispositivo {
 		puertos=1;
 	}
 	
-	
+	public void setConectado(Dispositivo d) {
+		conectado=d;
+	}
 	
 }

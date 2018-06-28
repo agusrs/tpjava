@@ -1,5 +1,17 @@
 
 public class Ip {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + c;
+		result = prime * result + p;
+		result = prime * result + s;
+		result = prime * result + t;
+		return result;
+	}
+
+
 	private int p=0;
 	private int s=0;
 	private int t=0;
@@ -70,7 +82,27 @@ public class Ip {
 			resultado = false;
 		}
 		return resultado;
-}
+	}
+	
+	public boolean equals(Ip ip) {
+		if (this == ip)
+			return true;
+		if (ip == null)
+			return false;
+		if (getClass() != ip.getClass())
+			return false;
+		Ip other = (Ip) ip;
+		if (c != other.c)
+			return false;
+		if (p != other.p)
+			return false;
+		if (s != other.s)
+			return false;
+		if (t != other.t)
+			return false;
+		return true;
+	}
+	
 
 	
 }
