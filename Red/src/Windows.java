@@ -42,6 +42,14 @@ public class Windows extends SistemaOperativo {
 			System.out.println(ip.getIp());
 		}
 	}
+	
+	public void recibirPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		if(esDestino(p)) {
+				procesarPaquete(p);
+		} else {
+			throw new DestinoInvalidoException();
+		}
+	}
 
 	public void ping(Ip ipd) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 		Servicio p = new Servicio(ips[0], ipd, 50, Servicio.tipos.ICMPRequest);
@@ -75,6 +83,42 @@ public class Windows extends SistemaOperativo {
 		dispositivo=(Terminal) dispositivo2;
 		
 	}
+	
+	public void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
+		switch(((Servicio) p).getTipo()) {
+		case WHO:
+			if(!p.isTratado()) {
+				Servicio p2 = new Servicio(p.getOrigen(), p.getDestino(), 50, Servicio.tipos.WHO);
+				p.setTratado(true);
+				enviarPaquete(p2);
+			}
+			break;
+		case ICMPRequest:
+			if(!p.isTratado()) {
+				Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), 50, Servicio.tipos.ICMPResponse);
+				if(p.getOrigen().esMismaRed(p.getDestino())) {
+					enviarPaquete(p3);
+				} else {
+					enviarPaquete(nuevoPaqueteRuteo(p3));
+				}
+			}
+			break;
+		case ICMPResponse:
+			if(!p.isTratado()) {
+				System.out.println("Recibido ICMP desde: " + p.getOrigen().getIp() + " TTL: " + p.getTtl());
+				p.setTratado(true);
+			}
+			break;
+		case SendMessage:
+			if(!p.isTratado()) {
+				if(this instanceof Windows) {
+					System.out.println(((Servicio) p).getMensaje());
+					p.setTratado(true);
+				}
+			}
+			break;
+		}
+}
 
 	
 	public void enviarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {

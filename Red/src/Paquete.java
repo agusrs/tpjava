@@ -1,6 +1,19 @@
 
 public abstract class Paquete {
 	
+	private Ip origen;
+	private Ip destino;
+	private int ttl;
+	private boolean tratado;
+	
+	
+	public boolean isTratado() {
+		return tratado;
+	}
+	public void setTratado(boolean tratado) {
+		this.tratado = tratado;
+	}
+	
 	public Ip getOrigen() {
 		return origen;
 	}
@@ -19,7 +32,5 @@ public abstract class Paquete {
 	public void setTtl(int ttl) {
 		this.ttl = ttl;
 	}
-	private Ip origen;
-	private Ip destino;
-	private int ttl;
+
 }

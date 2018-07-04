@@ -13,6 +13,9 @@ public abstract class SistemaOperativo {
 		tablaruteo = new ArrayList<>();
 	}	
 	
+	public List<Ruta> getTablaRuteo() {
+		return tablaruteo;
+	}
 
 	public Ruteo nuevoPaqueteRuteo(Paquete p) {
 		Ruteo pqt = new Ruteo(p);
@@ -25,39 +28,15 @@ public abstract class SistemaOperativo {
 	public abstract void enviarPaquete(Paquete p, int interfaz) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
 
 	
-	protected void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
-			switch(((Servicio) p).getTipo()) {
-			case WHO:
-				Servicio p2 = new Servicio(p.getOrigen(), p.getDestino(), 50, Servicio.tipos.WHO);
-				enviarPaquete(p2);
-				break;
-			case ICMPRequest:
-				Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), 50, Servicio.tipos.ICMPResponse);
-				enviarPaquete(p3);
-				break;
-			case ICMPResponse:
-				System.out.println("Recibido ICMP desde: " + p.getOrigen().getIp() + " TTL: " + p.getTtl());
-				break;
-			case SendMessage:
-				if(this instanceof Windows) {
-					System.out.println(((Servicio) p).getMensaje());
-				}
-				break;
-			}
-	}
+	public abstract void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
 			
 
 	public abstract void agregarIp(Ip ip);
 	public abstract void agregarIp(Ip ip, int puerto);
+	
 
 	
-	public void recibirPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
-		if(esDestino(p)) {
-				procesarPaquete(p);
-		} else {
-			throw new DestinoInvalidoException();
-		}
-	}
+	public abstract void recibirPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException ;
 	
 	public boolean esDestino(Paquete p) {
 		boolean res = false;
@@ -68,5 +47,23 @@ public abstract class SistemaOperativo {
 			}
 		return res;
 
+	}
+	
+	public String mostrarIps(Ip[] ips) {
+		String ipsf = null;
+		for(Ip ip : ips) {
+			if(ip!=null) {
+				ipsf = ipsf + " // " + ip.getIp();
+			}
+		}
+		return ipsf;
+	}
+	
+	public String mostrarTabla(List<Ruta> tablaruteo) {
+		String tabla = null;
+		for(Ruta ruta : tablaruteo) {
+			tabla = tabla + " // " + ruta.getDestino();
+		}
+		return tabla;
 	}
 }

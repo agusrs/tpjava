@@ -3,6 +3,11 @@ public class Ruta {
 	private Ip destino;
 	private int interfazsaliente;
 	
+	public Ruta(Ip ip, int interfaz) {
+		destino = ip;
+		interfazsaliente = interfaz;
+	}
+	
 	public void setDestino(Ip red) {
 		destino = red;
 	}

@@ -1,6 +1,6 @@
 
 public abstract class Dispositivo {
-	protected int puertos; //HARDCODEADO
+	protected int puertos;
 	protected Dispositivo[] interfaces = new Dispositivo[20];
 	protected SistemaOperativo so;
 	protected Paquete paqueteactual;
