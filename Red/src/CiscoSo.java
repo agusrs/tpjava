@@ -1,11 +1,19 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class CiscoSo extends SistemaOperativo {
 	private Router dispositivo;
 	
 	public CiscoSo() {
 		
+	}
+	
+	public int getPuerto(Ip ip) {
+		int puerto = 0;
+		for(Ruta ruta : tablaruteo) {
+			if(ruta.getDestino().esMismaRed(ip)) {
+				puerto = ruta.getInterfazsaliente();
+			}
+		}
+		return puerto;
 	}
 	
 	public Router getDispositivo() {
@@ -36,7 +44,7 @@ public class CiscoSo extends SistemaOperativo {
 			if(p.getDestino().esMismaRed(ips[i])) {
 				p.setTtl(p.getTtl()-1);
 				if(p.getTtl()>0) {
-					procesarPaquete(p);
+					procesarPaquete(p);	
 				}
 			}
 		}
@@ -45,27 +53,23 @@ public class CiscoSo extends SistemaOperativo {
 	@Override
 	public void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 			if(p instanceof Servicio) {
-				switch(((Servicio) p).getTipo()) {
-				case WHO:
-					if(!p.isTratado()) {
-						Servicio p2 = new Servicio(p.getOrigen(), p.getDestino(), 50, Servicio.tipos.SendMessage);
-						p2.setMensaje("Nombre: " + this.nombre + ", Version: " + this.version + ", Ips: " + mostrarIps(ips) + "Tabla de Ruteo: " + mostrarTabla(tablaruteo));
-						p.setTratado(true);
-						enviarPaquete(p2);
+				if(esDestino(p)) {
+					switch(((Servicio) p).getTipo()) {
+					case WHO:
+							Servicio p2 = new Servicio(p.getDestino(), p.getOrigen(), p.getTtl(), Servicio.tipos.SendMessage);
+							p2.setMensaje("Nombre: " + this.nombre + ", Version: " + this.version + ", Ips: " + mostrarIps(ips) + "Tabla de Ruteo: " + mostrarTabla(tablaruteo));
+							enviarPaquete(p2, getPuerto(p2.getDestino()));
+						break;
+					case ICMPRequest:
+							Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), p.getTtl(), Servicio.tipos.ICMPResponse);
+							enviarPaquete(p3, getPuerto(p3.getDestino()));
+						break;
+					case ICMPResponse:
+							System.out.println("Recibido ICMP desde: " + p.getOrigen().getIp() + " TTL: " + p.getTtl());
+						break;
+					default:
+						break;
 					}
-					break;
-				case ICMPRequest:
-					if(!p.isTratado()) {
-						Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), 50, Servicio.tipos.ICMPResponse);
-						enviarPaquete(p3);
-					}
-					break;
-				case ICMPResponse:
-					if(!p.isTratado()) {
-						System.out.println("Recibido ICMP desde: " + p.getOrigen().getIp() + " TTL: " + p.getTtl());
-						p.setTratado(true);
-					}
-					break;
 				}
 			} else {
 				Paquete p2 = ((Ruteo) p).getContenido();
@@ -85,12 +89,15 @@ public class CiscoSo extends SistemaOperativo {
 
 	public void ping(Ip ipd) throws DestinoInvalidoException, SistemaOperativoFaltanteException {		
 		Servicio p = new Servicio(ips[0], ipd, 50, Servicio.tipos.ICMPRequest);	
+		boolean enviado = false;
 		for(Ruta ruta : tablaruteo) {
 			if(ipd.esMismaRed(ruta.getDestino())) {
 				enviarPaquete(p, ruta.getInterfazsaliente());
-			} else {
-				System.out.println("Destino inaccesible");
+				enviado=true;
 			}
+		}
+		if(enviado==false) {
+			System.out.println("Destino inaccesible");
 		}
 	}
 
@@ -112,5 +119,17 @@ public class CiscoSo extends SistemaOperativo {
 	public void enviarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 		System.out.println("Error, debe indicar una interfaz de salida");
 	}
-	
+
+	@Override
+	public void who(Ip destino) {
+		System.out.println("Comando invalido para routers");
+		
+	}
+
+	@Override
+	public void enviarMensaje(Ip destino, String mensaje){
+		System.out.println("Comando invalido para routers");
+		
+	}
+
 }

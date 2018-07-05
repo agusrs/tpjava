@@ -13,6 +13,7 @@ public abstract class SistemaOperativo {
 		tablaruteo = new ArrayList<>();
 	}	
 	
+	
 	public List<Ruta> getTablaRuteo() {
 		return tablaruteo;
 	}
@@ -21,6 +22,10 @@ public abstract class SistemaOperativo {
 		Ruteo pqt = new Ruteo(p);
 		return pqt;
 	}
+	
+	public abstract void enviarMensaje(Ip destino, String mensaje) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
+	
+	public abstract void who(Ip destino) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
 	
 	public abstract void ping(Ip ipd) throws DestinoInvalidoException, SistemaOperativoFaltanteException;
 	
@@ -50,7 +55,7 @@ public abstract class SistemaOperativo {
 	}
 	
 	public String mostrarIps(Ip[] ips) {
-		String ipsf = null;
+		String ipsf = "";
 		for(Ip ip : ips) {
 			if(ip!=null) {
 				ipsf = ipsf + " // " + ip.getIp();

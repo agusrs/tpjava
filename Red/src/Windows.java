@@ -1,9 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-
-
 public class Windows extends SistemaOperativo {
 	protected int cantips;
 	private Ip dgw;
@@ -33,8 +27,8 @@ public class Windows extends SistemaOperativo {
 		this.dgw=dgw;
 	}
 	
-	public Ip[] getIp() {
-		return ips;
+	public Ip getIp(int i) {
+		return ips[i];
 	}
 	
 	public void verIp() {
@@ -43,10 +37,14 @@ public class Windows extends SistemaOperativo {
 		}
 	}
 	
+	public Ip getDgw() {
+		return dgw;
+	}
+	
 	public void recibirPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 		if(esDestino(p)) {
-				procesarPaquete(p);
-		} else {
+			procesarPaquete(p);
+		} else {	
 			throw new DestinoInvalidoException();
 		}
 	}
@@ -87,34 +85,35 @@ public class Windows extends SistemaOperativo {
 	public void procesarPaquete(Paquete p) throws DestinoInvalidoException, SistemaOperativoFaltanteException {
 		switch(((Servicio) p).getTipo()) {
 		case WHO:
-			if(!p.isTratado()) {
-				Servicio p2 = new Servicio(p.getOrigen(), p.getDestino(), 50, Servicio.tipos.WHO);
-				p.setTratado(true);
+			Servicio p2 = new Servicio(p.getDestino(), p.getOrigen(), p.getTtl(), Servicio.tipos.SendMessageWho);
+			p2.setMensaje("Nombre: " + this.nombre + ", Version: " + this.version + ", Ips: " + mostrarIps(ips));
+			if(p.getOrigen().esMismaRed(p.getDestino())) {
 				enviarPaquete(p2);
+			} else {
+				enviarPaquete(nuevoPaqueteRuteo(p2));
 			}
 			break;
 		case ICMPRequest:
-			if(!p.isTratado()) {
-				Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), 50, Servicio.tipos.ICMPResponse);
+				Servicio p3 = new Servicio(p.getDestino(), p.getOrigen(), p.getTtl(), Servicio.tipos.ICMPResponse);
 				if(p.getOrigen().esMismaRed(p.getDestino())) {
 					enviarPaquete(p3);
 				} else {
 					enviarPaquete(nuevoPaqueteRuteo(p3));
 				}
-			}
 			break;
 		case ICMPResponse:
-			if(!p.isTratado()) {
 				System.out.println("Recibido ICMP desde: " + p.getOrigen().getIp() + " TTL: " + p.getTtl());
-				p.setTratado(true);
-			}
 			break;
 		case SendMessage:
-			if(!p.isTratado()) {
 				if(this instanceof Windows) {
+					System.out.println("Mensaje de " + p.getOrigen().getIp() + ": ");
 					System.out.println(((Servicio) p).getMensaje());
-					p.setTratado(true);
 				}
+				break;
+		case SendMessageWho:
+			if(this instanceof Windows) {
+				System.out.println("Mensaje de " + p.getDestino().getIp() + ": ");
+				System.out.println(((Servicio) p).getMensaje());
 			}
 			break;
 		}

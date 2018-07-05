@@ -3,6 +3,7 @@ public class Ruteo extends Paquete {
 	private Paquete contenido;
 
 	public Paquete getContenido() {
+		contenido.setTtl(this.getTtl());
 		return contenido;
 	}
 

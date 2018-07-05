@@ -1,6 +1,6 @@
 
 public class Servicio extends Paquete {
-	public enum tipos {WHO, ICMPRequest, ICMPResponse, SendMessage}
+	public enum tipos {WHO, ICMPRequest, ICMPResponse, SendMessage, SendMessageWho}
 	private tipos tipo;
 	private String mensaje;
 	
@@ -20,6 +20,9 @@ public class Servicio extends Paquete {
 				break;
 			case SendMessage:
 				this.tipo = tipos.SendMessage;
+				break;
+			case SendMessageWho:
+				this.tipo = tipos.SendMessageWho;
 				break;
 			}
 	}
@@ -49,6 +52,9 @@ public class Servicio extends Paquete {
 			break;
 		case SendMessage:
 			this.tipo = tipos.SendMessage;
+			break;
+		case SendMessageWho:
+			this.tipo=tipos.SendMessageWho;
 			break;
 		}
 	}

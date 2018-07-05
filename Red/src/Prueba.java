@@ -35,12 +35,13 @@ public class Prueba {
 			router1.getSO().agregarIp(ip4, 2);
 			pc3.getSO().agregarIp(ip5);
 			((Windows)pc3.getSO()).agregarDgw(dgw3);
-			pc1.getSO().ping(ip5);
+			pc1.getSO().ping(ip2);
+			router1.getSO().ping(ip5);
+			pc1.getSO().who(ip5);
+			pc1.getSO().enviarMensaje(ip5, "Hola mundo");
 
 
 			
-			
-			System.out.println("Termina bien");
 
 			
 		} catch (SistemaOperativoInvalidoException e) {
